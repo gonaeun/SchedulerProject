@@ -75,7 +75,7 @@ public class ScheduleController {
             @PathVariable long id,
             @RequestBody ScheduleRequestDto dto) {
         return scheduleService.updateSchedule(id, dto);
-        // Service 계층에서 실제 로직 실힝 후 뱉은 결과!
+        // Service 계층에서 실제 로직 실행 후 뱉은 결과!
     }
 
 }
