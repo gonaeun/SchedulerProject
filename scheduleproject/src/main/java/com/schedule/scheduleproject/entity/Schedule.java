@@ -44,7 +44,11 @@ public class Schedule {
     @PrePersist  // Entity 처음 저장되기 직전에, 기본값 설정하는 역할
     public void prePersist(){
         this.create_date = LocalDateTime.now();
-        this.update_date = LocalDateTime.now();
+        this.update_date = this.create_date;
     }
 
+//    @PreUpdate
+//    public void preUpdate() {
+//        this.update_date = LocalDateTime.now();
+//    }
 }
