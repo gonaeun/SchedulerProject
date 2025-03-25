@@ -2,6 +2,8 @@ package com.schedule.scheduleproject.service;
 
 import com.schedule.scheduleproject.dto.ScheduleRequestDto;
 import com.schedule.scheduleproject.entity.Schedule;
+import com.schedule.scheduleproject.exception.InvalidPasswordException;
+import com.schedule.scheduleproject.exception.ScheduleNotFoundException;
 import com.schedule.scheduleproject.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Service  // 스프링 빈으로 등록
 public class ScheduleServiceImpl implements ScheduleService {
@@ -52,15 +55,22 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public Schedule getScheduleById(Long id) { // Service 계층에선 사용자가 api 읽기 좋게 "get" 표현
-        return scheduleRepository.findScheduleById(id);  // Repository 계층에선 실제 데이터를 찾는 "find"대로 표현
+        Schedule schedule =  scheduleRepository.findScheduleById(id);  // Repository 계층에선 실제 데이터를 찾는 "find"대로 표현
+        if (schedule == null) {
+            throw new ScheduleNotFoundException(id);
+        }
+        return schedule;
     }
 
     @Override
     public void deleteSchedule(Long id, String password) {
         Schedule schedule = scheduleRepository.findScheduleById(id); // 해당 id인 일정 찾기
 
+        if (schedule == null) { // 먼저 null 체크
+            throw new ScheduleNotFoundException(id);
+        }
         if (!schedule.getPassword().equals(password)) { // 비밀번호 검증
-            throw new SecurityException("비밀번호가 일치하지 않습니다.");
+            throw new InvalidPasswordException();
         }
 
         scheduleRepository.deleteSchedule(id);
@@ -69,9 +79,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public Schedule updateSchedule (Long id, ScheduleRequestDto dto) {
         Schedule schedule = scheduleRepository.findScheduleById(id); // 해당 id인 일정 찾기
-
+        if (schedule == null) { // 먼저 null값 체크
+            throw new ScheduleNotFoundException(id);
+        }
         if (!schedule.getPassword().equals(dto.getPassword())) { // 비밀번호 검증
-            throw new SecurityException("비밀번호가 일치하지 않습니다.");
+            throw new InvalidPasswordException();
         }
 
         schedule.setTitle(dto.getTitle());
