@@ -1,6 +1,7 @@
 package com.schedule.scheduleproject.controller;
 
 
+import com.schedule.scheduleproject.dto.ScheduleRequestDto;
 import com.schedule.scheduleproject.entity.Schedule;
 import com.schedule.scheduleproject.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,8 +62,20 @@ public class ScheduleController {
 
     // 일정 삭제
     @DeleteMapping("/{id}")
-    public void deleteSchedule(@PathVariable long id) {
-        scheduleService.deleteSchedule(id);
+    public void deleteSchedule(
+            @PathVariable long id,
+            @RequestParam String password
+    ) {
+        scheduleService.deleteSchedule(id, password);
+    }
+
+    // 일정 수정
+    @PutMapping("/{id}")
+    public Schedule updateSchedule(
+            @PathVariable long id,
+            @RequestBody ScheduleRequestDto dto) {
+        return scheduleService.updateSchedule(id, dto);
+        // Service 계층에서 실제 로직 실힝 후 뱉은 결과!
     }
 
 }
