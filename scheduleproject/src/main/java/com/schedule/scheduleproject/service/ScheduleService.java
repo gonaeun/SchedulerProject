@@ -1,5 +1,7 @@
 package com.schedule.scheduleproject.service;
 
+import com.schedule.scheduleproject.dto.ScheduleRequestDto;
+import com.schedule.scheduleproject.dto.ScheduleResponsetDto;
 import com.schedule.scheduleproject.entity.Schedule;
 
 import java.time.LocalDate;
@@ -15,8 +17,9 @@ public interface ScheduleService {
 
     Schedule getScheduleById(Long id);  // 단건 일정 조회
 
-    void deleteSchedule(Long id); // 일정 삭제
+    void deleteSchedule(Long id, String password); // 일정 삭제
+    // 해당 id인 일정을 찾아서. password가 일치하면 삭제해줘
 
-    // 선택 일정 수정은 나중에 작성하겠음
-
+    Schedule updateSchedule(Long id, ScheduleRequestDto dto);// 선택 일정 수정
+    // 해당 id인 일정을 찾아서, 수정 요청 받은 DTO 정보대로 수정해줘
 }

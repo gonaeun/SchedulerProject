@@ -1,5 +1,6 @@
 package com.schedule.scheduleproject.service;
 
+import com.schedule.scheduleproject.dto.ScheduleRequestDto;
 import com.schedule.scheduleproject.entity.Schedule;
 import com.schedule.scheduleproject.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,28 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public void deleteSchedule(Long id) {
+    public void deleteSchedule(Long id, String password) {
+        Schedule schedule = scheduleRepository.findScheduleById(id); // 해당 id인 일정 찾기
+
+        if (!schedule.getPassword().equals(password)) { // 비밀번호 검증
+            throw new SecurityException("비밀번호가 일치하지 않습니다.");
+        }
+
         scheduleRepository.deleteSchedule(id);
+    }
+
+    @Override
+    public Schedule updateSchedule (Long id, ScheduleRequestDto dto) {
+        Schedule schedule = scheduleRepository.findScheduleById(id); // 해당 id인 일정 찾기
+
+        if (!schedule.getPassword().equals(dto.getPassword())) { // 비밀번호 검증
+            throw new SecurityException("비밀번호가 일치하지 않습니다.");
+        }
+
+        schedule.setTitle(dto.getTitle());
+        schedule.setContent(dto.getContent());
+        schedule.setWriter(dto.getWriter());
+        schedule.setUpdate_date(LocalDateTime.now());
+        return schedule;
     }
 }
