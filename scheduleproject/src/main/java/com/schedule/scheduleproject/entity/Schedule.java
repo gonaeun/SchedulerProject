@@ -25,7 +25,7 @@ public class Schedule {
     private String writer; // 작성자명
 
     @Column(nullable = false)
-    private String contents; // 일정 내용
+    private String content; // 일정 내용
 
     @Column(nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd") // String을 LocalDate으로 변환하는 포맷. 날짜 포맷 설정함

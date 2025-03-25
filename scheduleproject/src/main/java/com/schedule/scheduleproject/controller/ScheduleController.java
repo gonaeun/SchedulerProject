@@ -53,7 +53,6 @@ public class ScheduleController {
     return scheduleService.getFilteredSchedules(writer, update_date);
     }
 
-
     // 단건 일정 조회
     @GetMapping("/{id}")
     public Schedule getSchedule(@PathVariable long id) {
