@@ -4,6 +4,7 @@ import com.schedule.scheduleproject.entity.Schedule;
 import com.schedule.scheduleproject.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public Schedule saveSchedule(Schedule schedule) {
+        schedule.setCreate_date(LocalDateTime.now());
+        schedule.setUpdate_date(LocalDateTime.now());
         return scheduleRepository.saveSchedule(schedule);
     }
 
