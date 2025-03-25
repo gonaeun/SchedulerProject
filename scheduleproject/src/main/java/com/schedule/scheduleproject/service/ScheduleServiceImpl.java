@@ -4,9 +4,13 @@ import com.schedule.scheduleproject.entity.Schedule;
 import com.schedule.scheduleproject.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service  // 스프링 빈으로 등록
 public class ScheduleServiceImpl implements ScheduleService {
@@ -30,6 +34,19 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public List<Schedule> getAllSchedules() {
         return scheduleRepository.findAllSchedules();
+    }
+
+    @Override
+    public List<Schedule> getFilteredSchedules(String writer, LocalDate update_date){
+        return scheduleRepository.findAllSchedules().stream()
+                .filter(schedule -> {
+                    boolean matchWriter = (writer == null || writer.equals(schedule.getWriter()));
+                    boolean matchDate = (update_date == null || update_date.equals(schedule.getUpdate_date().toLocalDate()));
+                    return matchWriter || matchDate;  // 하나라도 true면 해당 schedule 객체 포함
+                })
+                .sorted(Comparator.comparing(Schedule::getUpdate_date).reversed())
+                .collect(Collectors.toList());
+        // Stream API를 활용해서 Schedule 리스트를 필터링, 정렬, 리스트로 반환하는 파이프라인.
     }
 
     @Override

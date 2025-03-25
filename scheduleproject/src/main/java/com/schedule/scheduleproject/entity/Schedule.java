@@ -1,9 +1,11 @@
 package com.schedule.scheduleproject.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity // JAP에게 "이 클래스는 DB 테이블이에요!"라고 알려줌 (DB랑 mapping)
@@ -26,7 +28,8 @@ public class Schedule {
     private String contents; // 일정 내용
 
     @Column(nullable = false)
-    private LocalDateTime plan_date;  // 일정 날짜
+    @JsonFormat(pattern = "yyyy-MM-dd") // String을 LocalDate으로 변환하는 포맷. 날짜 포맷 설정함
+    private LocalDate plan_date;  // 일정 날짜
 
     @Column(nullable = false)
     private String password; // 비밀번호

@@ -2,13 +2,16 @@ package com.schedule.scheduleproject.service;
 
 import com.schedule.scheduleproject.entity.Schedule;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ScheduleService {
 
     Schedule saveSchedule(Schedule schedule); // 일정 생성, 수정
 
-    List<Schedule> getAllSchedules();  // 전체 일정 조회
+    List<Schedule> getAllSchedules();  // 필터 없이, 전체 일정 조회
+
+    List<Schedule> getFilteredSchedules(String writer, LocalDate update_date); // 조건대로 전체 일정 조회
 
     Schedule getScheduleById(Long id);  // 단건 일정 조회
 

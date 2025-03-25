@@ -4,8 +4,10 @@ package com.schedule.scheduleproject.controller;
 import com.schedule.scheduleproject.entity.Schedule;
 import com.schedule.scheduleproject.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController // @Controller + @ResponseBody
@@ -28,11 +30,29 @@ public class ScheduleController {
         return scheduleService.saveSchedule(schedule);
     }
 
+//    // 전체 일정 조회
+//    @GetMapping
+//    public List<Schedule> getAllSchedules() {
+//        return scheduleService.getAllSchedules();
+//    }
+//
+//    // 전체 일정 조회(필터링)
+//    @GetMapping
+//    public List<Schedule> getFilteredSchedules() {
+//        return scheduleService.getFilteredSchedules();
+//    }
+
     // 전체 일정 조회
     @GetMapping
-    public List<Schedule> getAllSchedules() {
-        return scheduleService.getAllSchedules();
+    public List<Schedule> getSchedules(
+            @RequestParam(required = false) String writer,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate update_date
+    ) { if (writer == null && update_date == null) {
+        return scheduleService.getAllSchedules();  // 필터링 조건이 없으면 전체 일정 조회
     }
+    return scheduleService.getFilteredSchedules(writer, update_date);
+    }
+
 
     // 단건 일정 조회
     @GetMapping("/{id}")
