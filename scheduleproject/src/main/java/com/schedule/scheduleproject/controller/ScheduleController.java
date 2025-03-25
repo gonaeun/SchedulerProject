@@ -7,7 +7,7 @@ import com.schedule.scheduleproject.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
+//import jakarta.validation.Valid;
 import com.schedule.scheduleproject.dto.ScheduleDeleteRequestDto;
 
 
@@ -67,7 +67,7 @@ public class ScheduleController {
     @DeleteMapping("/{id}")
     public void deleteSchedule(
             @PathVariable long id,
-            @RequestBody @Valid ScheduleDeleteRequestDto dto
+            @RequestBody ScheduleDeleteRequestDto dto
     ) {
         scheduleService.deleteSchedule(id, dto.getPassword());  // 비밀번호를 파라미터로 받지말고 DTO에서 꺼내
     }
