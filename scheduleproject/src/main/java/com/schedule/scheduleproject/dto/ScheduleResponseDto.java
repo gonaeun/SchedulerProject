@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
-public class ScheduleResponsetDto {
+public class ScheduleResponseDto {
 
     private Long id;
     private String title;
@@ -20,7 +20,7 @@ public class ScheduleResponsetDto {
     private LocalDateTime create_date;
     private LocalDateTime update_date;
 
-    public ScheduleResponsetDto(Schedule schedule) {
+    public ScheduleResponseDto(Schedule schedule) {
         this.id = schedule.getId();
         this.title = schedule.getTitle();
         this.content = schedule.getContent();

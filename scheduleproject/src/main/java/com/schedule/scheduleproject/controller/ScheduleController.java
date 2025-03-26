@@ -2,6 +2,7 @@ package com.schedule.scheduleproject.controller;
 
 
 import com.schedule.scheduleproject.dto.ScheduleRequestDto;
+import com.schedule.scheduleproject.dto.ScheduleResponseDto;
 import com.schedule.scheduleproject.entity.Schedule;
 import com.schedule.scheduleproject.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import com.schedule.scheduleproject.dto.ScheduleDeleteRequestDto;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController // @Controller + @ResponseBody
 @RequestMapping("/schedules")  // Prefix
@@ -30,8 +32,9 @@ public class ScheduleController {
 
     // 일정 생성
     @PostMapping
-    public Schedule createSchedule(@RequestBody Schedule schedule) {
-        return scheduleService.saveSchedule(schedule);
+    public ScheduleResponseDto createSchedule(@RequestBody Schedule schedule) {
+        Schedule saved = scheduleService.saveSchedule(schedule);
+        return new ScheduleResponseDto(saved);
     }
 
 //    // 전체 일정 조회
@@ -48,19 +51,27 @@ public class ScheduleController {
 
     // 전체 일정 조회
     @GetMapping
-    public List<Schedule> getSchedules(
+    public List<ScheduleResponseDto> getSchedules(
             @RequestParam(required = false) String writer,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate update_date
-    ) { if (writer == null && update_date == null) {
-        return scheduleService.getAllSchedules();  // 필터링 조건이 없으면 전체 일정 조회
-    }
-    return scheduleService.getFilteredSchedules(writer, update_date);
+    ) {
+        List<Schedule> schedules;
+
+        if (writer == null && update_date == null) {
+            schedules = scheduleService.getAllSchedules();  // 필터링 조건이 없으면 전체 일정 조회
+        } else {
+            schedules = scheduleService.getFilteredSchedules(writer, update_date);
+        }
+
+        // List<엔터티> 데이터를 List<DTO>로 변환하는 표준 패턴
+        // Schedule 엔터티 리스트를 클라이언트 응답용 DTO 리스트로 변환
+        return schedules.stream().map(schedule -> new ScheduleResponseDto(schedule)).collect(Collectors.toList());
     }
 
     // 단건 일정 조회
     @GetMapping("/{id}")
-    public Schedule getSchedule(@PathVariable long id) {
-        return scheduleService.getScheduleById(id);
+    public ScheduleResponseDto getSchedule(@PathVariable long id) {
+        return new ScheduleResponseDto(scheduleService.getScheduleById(id));
     }
 
     // 일정 삭제
@@ -74,10 +85,11 @@ public class ScheduleController {
 
     // 일정 수정
     @PutMapping("/{id}")
-    public Schedule updateSchedule(
+    public ScheduleResponseDto updateSchedule(
             @PathVariable long id,
             @RequestBody ScheduleRequestDto dto) {
-        return scheduleService.updateSchedule(id, dto);
+        Schedule updated = scheduleService.updateSchedule(id, dto);
+        return new ScheduleResponseDto(updated);
         // Service 계층에서 실제 로직 실행 후 뱉은 결과!
     }
 

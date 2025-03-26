@@ -1,7 +1,6 @@
 package com.schedule.scheduleproject.service;
 
 import com.schedule.scheduleproject.dto.ScheduleRequestDto;
-import com.schedule.scheduleproject.dto.ScheduleResponsetDto;
 import com.schedule.scheduleproject.entity.Schedule;
 
 import java.time.LocalDate;
