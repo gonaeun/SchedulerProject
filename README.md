@@ -28,6 +28,13 @@
 
 ---
 
+## 스키마 정의서 
+- Schedule 테이블
+  ![image](https://github.com/user-attachments/assets/b54e3f18-6817-47eb-bea0-2541182b1e8c)
+
+---
+
 ## ERD 다이어그램
+![image](https://github.com/user-attachments/assets/5cc072b8-16ac-4b23-b80b-4f4ecb2ff6db)
 
 ---
