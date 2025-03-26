@@ -22,7 +22,9 @@
 ---
 
 ## API 명세
+![image](https://github.com/user-attachments/assets/3cac4ce2-c95c-4f41-8fe9-34e1b126bb09)
 
+🎯https://documenter.getpostman.com/view/43269199/2sAYkKKJ8j 에서 확인 가능
 
 ---
 
