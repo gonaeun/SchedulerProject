@@ -57,7 +57,7 @@ public class ScheduleController {
             @RequestParam(required = false) String writer,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate update_date
     ) {
-        List<Schedule> schedules;
+        List<Schedule> schedules; // 초기화
 
         if (writer == null && update_date == null) {
             schedules = scheduleService.getAllSchedules();  // 필터링 조건이 없으면 전체 일정 조회
@@ -69,7 +69,7 @@ public class ScheduleController {
         // return schedules.stream().map(schedule -> new ScheduleResponseDto(schedule)).collect(Collectors.toList());
 
         // 일단 stream api보다 이해하기 쉬운 for 루프 사용
-        List<ScheduleResponseDto> responseList = new ArrayList<>();
+        List<ScheduleResponseDto> responseList = new ArrayList<>(); // 리스트 초기화 (ResponseEntity<> 코드로 바꿀 예정)
         for (Schedule schedule : schedules) {
             ScheduleResponseDto responseDto = new ScheduleResponseDto(schedule);
             responseList.add(responseDto);
@@ -79,8 +79,15 @@ public class ScheduleController {
 
     // 단건 일정 조회
     @GetMapping("/{id}")
-    public ScheduleResponseDto getSchedule(@PathVariable long id) {
-        return new ScheduleResponseDto(scheduleService.getScheduleById(id));
+    public ResponseEntity<ScheduleResponseDto> getSchedule(@PathVariable long id) {
+        Schedule schedule = scheduleService.getScheduleById(id);
+
+        if (schedule == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);  // 404 NotFound 반환
+        }
+
+        ScheduleResponseDto responseDto = new ScheduleResponseDto(schedule);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     // 일정 삭제
