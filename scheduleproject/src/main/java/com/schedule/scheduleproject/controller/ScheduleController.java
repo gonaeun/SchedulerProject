@@ -14,8 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @RestController // @Controller + @ResponseBody
@@ -65,9 +65,16 @@ public class ScheduleController {
             schedules = scheduleService.getFilteredSchedules(writer, update_date);
         }
 
-        // List<엔터티> 데이터를 List<DTO>로 변환하는 표준 패턴
-        // Schedule 엔터티 리스트를 클라이언트 응답용 DTO 리스트로 변환
-        return schedules.stream().map(schedule -> new ScheduleResponseDto(schedule)).collect(Collectors.toList());
+        // stream api를 사용해서 List<엔터티> 데이터를 List<DTO>로 변환
+        // return schedules.stream().map(schedule -> new ScheduleResponseDto(schedule)).collect(Collectors.toList());
+
+        // 일단 stream api보다 이해하기 쉬운 for 루프 사용
+        List<ScheduleResponseDto> responseList = new ArrayList<>();
+        for (Schedule schedule : schedules) {
+            ScheduleResponseDto responseDto = new ScheduleResponseDto(schedule);
+            responseList.add(responseDto);
+        }
+        return responseList;
     }
 
     // 단건 일정 조회
