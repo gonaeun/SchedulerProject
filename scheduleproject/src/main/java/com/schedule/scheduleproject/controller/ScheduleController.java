@@ -16,6 +16,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jakarta.validation.Valid;
+
+
 @RestController // @Controller + @ResponseBody
 @RequestMapping("/schedules")  // Prefix
 public class ScheduleController {
@@ -78,7 +81,7 @@ public class ScheduleController {
     @DeleteMapping("/{id}")
     public void deleteSchedule(
             @PathVariable long id,
-            @RequestBody ScheduleDeleteRequestDto dto
+            @RequestBody @Valid ScheduleDeleteRequestDto dto
     ) {
         scheduleService.deleteSchedule(id, dto.getPassword());  // 비밀번호를 파라미터로 받지말고 DTO에서 꺼내
     }
