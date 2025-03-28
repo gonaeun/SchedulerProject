@@ -1,26 +1,23 @@
 package com.schedule.scheduleproject.controller;
 
 
+import com.schedule.scheduleproject.dto.ScheduleDeleteRequestDto;
 import com.schedule.scheduleproject.dto.ScheduleRequestDto;
 import com.schedule.scheduleproject.dto.ScheduleResponseDto;
 import com.schedule.scheduleproject.entity.Schedule;
 import com.schedule.scheduleproject.service.ScheduleService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-//import jakarta.validation.Valid;
-import com.schedule.scheduleproject.dto.ScheduleDeleteRequestDto;
-
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import jakarta.validation.Valid;
-
 
 @RestController // @Controller + @ResponseBody
-@RequestMapping("/schedules")  // Prefix
+@RequestMapping("/schedules")  // Prefix url 설정할 때 사용
 public class ScheduleController {
 
     // 주입된 의존성을 변경할 수 없어서 객체의 상태를 안전하게 유지할 수 있음

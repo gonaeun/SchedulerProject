@@ -17,6 +17,7 @@ public class Schedule {
     @Id // PK 나타냄
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // PK 값 자동생성 관리
     private Long id;
+    // int 대신 long 사용한 이유 ; Long은 wrapper 클래스이기 때문에 null을 포함함! 식별자는 안전하게 long 사용하자
 
     @Column(nullable = false) // NOT NULL
     private String title; // 일정 제목
