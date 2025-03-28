@@ -1,7 +1,6 @@
 package com.schedule.scheduleproject.repository;
 
 import com.schedule.scheduleproject.entity.Schedule;
-import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;

@@ -1,6 +1,7 @@
 package com.schedule.scheduleproject.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.schedule.scheduleproject.dto.ScheduleRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,12 +42,22 @@ public class Schedule {
     @Column(nullable = false)
     private LocalDateTime update_date; // 게시물 수정일
 
-    // 최초 입력시, 수정일과 작성일 동일
-    @PrePersist  // Entity 처음 저장되기 직전에, 기본값 설정하는 역할
-    public void prePersist(){
-        this.create_date = LocalDateTime.now();
-        this.update_date = this.create_date;
+    public void updateSchedule(ScheduleRequestDto scheduleRequestDto) {
+        this.title = scheduleRequestDto.getTitle();
+        this.content = scheduleRequestDto.getContent();
+        this.writer = scheduleRequestDto.getWriter();
     }
+
+    public void updateTitle(ScheduleRequestDto scheduleRequestDto) {
+        this.title = scheduleRequestDto.getTitle();
+    }
+
+    // 최초 입력시, 수정일과 작성일 동일
+//    @PrePersist  // Entity 처음 저장되기 직전에, 기본값 설정하는 역할
+//    public void prePersist(){
+//        this.create_date = LocalDateTime.now();
+//        this.update_date = this.create_date;
+//    }
 
 //    @PreUpdate
 //    public void preUpdate() {

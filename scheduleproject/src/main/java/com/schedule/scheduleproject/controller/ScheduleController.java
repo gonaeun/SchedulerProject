@@ -53,7 +53,7 @@ public class ScheduleController {
 
     // 전체 일정 조회
     @GetMapping
-    public List<ScheduleResponseDto> getSchedules(
+    public ResponseEntity<List<ScheduleResponseDto>> getSchedules(
             @RequestParam(required = false) String writer,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate update_date
     ) {
@@ -74,7 +74,7 @@ public class ScheduleController {
             ScheduleResponseDto responseDto = new ScheduleResponseDto(schedule);
             responseList.add(responseDto);
         }
-        return responseList;
+        return ResponseEntity.status(HttpStatus.OK).body(responseList);
     }
 
     // 단건 일정 조회
@@ -92,21 +92,56 @@ public class ScheduleController {
 
     // 일정 삭제
     @DeleteMapping("/{id}")
-    public void deleteSchedule(
+    public ResponseEntity<Void> deleteSchedule(
             @PathVariable long id,
             @RequestBody @Valid ScheduleDeleteRequestDto dto
     ) {
         scheduleService.deleteSchedule(id, dto.getPassword());  // 비밀번호를 파라미터로 받지말고 DTO에서 꺼내
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // 일정 수정
     @PutMapping("/{id}")
-    public ScheduleResponseDto updateSchedule(
+    public ResponseEntity<ScheduleResponseDto> updateSchedule(
             @PathVariable long id,
             @RequestBody ScheduleRequestDto dto) {
-        Schedule updated = scheduleService.updateSchedule(id, dto);
-        return new ScheduleResponseDto(updated);
+
+        Schedule schedule = scheduleService.getScheduleById(id);
+
+        // NullPointerException(NPE)방지
+        if (schedule == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        // 필수값 검증
+        if (dto.getTitle() == null || dto.getContent() == null || dto.getWriter() == null || dto.getPassword() == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        schedule.updateSchedule(dto);
+        return new ResponseEntity<>(new ScheduleResponseDto(schedule), HttpStatus.OK);
         // Service 계층에서 실제 로직 실행 후 뱉은 결과!
     }
 
+    // 일정 일부 수정(pw 없이 제목만 수정 가능)
+    @PatchMapping("/{id}")
+    public ResponseEntity<ScheduleResponseDto> updateTitle(
+            @PathVariable long id,
+            @RequestBody ScheduleRequestDto dto) {
+
+        Schedule schedule = scheduleService.getScheduleById(id);
+
+        // NullPointerException(NPE)방지
+        if (schedule == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        // 필수값 검증 (제목 필수)
+        if (dto.getTitle() == null || dto.getContent() != null || dto.getWriter() != null || dto.getPassword() != null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        schedule.updateTitle(dto);
+        return new ResponseEntity<>(new ScheduleResponseDto(schedule), HttpStatus.OK);
+    }
 }
