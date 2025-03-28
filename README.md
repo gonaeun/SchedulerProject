@@ -3,7 +3,7 @@
 
 ## 📌 프로젝트 개요
 - **목표** : JDBC를 활용한 CRUD 구현을 목표로 하는 **일정 관리 어플리케이션**입니다.
-- **기간** : 2025.03.21 ~ 2025.03.26
+- **기간** : 2025.03.24 ~ 2025.03.29
 - **인원** : 1인 개발 (개인 프로젝트)
 - **기술스택** : Java, Spring Boot
 
@@ -22,7 +22,7 @@
 ---
 
 ## 🎯 API 명세
-![image](https://github.com/user-attachments/assets/3cac4ce2-c95c-4f41-8fe9-34e1b126bb09)
+![image](https://github.com/user-attachments/assets/f95e63ff-6679-4dc0-a5e5-6bde936193cf)
 
 🎨 https://documenter.getpostman.com/view/43269199/2sAYkKKJ8j 에서 확인 가능
 
