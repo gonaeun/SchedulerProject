@@ -9,6 +9,8 @@ import com.schedule.scheduleproject.service.ScheduleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -32,9 +34,9 @@ public class ScheduleController {
 
     // 일정 생성
     @PostMapping
-    public ScheduleResponseDto createSchedule(@RequestBody Schedule schedule) {
+    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody Schedule schedule) {
         Schedule saved = scheduleService.saveSchedule(schedule);
-        return new ScheduleResponseDto(saved);
+        return new ResponseEntity<>(new ScheduleResponseDto(saved), HttpStatus.CREATED);
     }
 
 //    // 전체 일정 조회
