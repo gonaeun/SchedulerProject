@@ -1,5 +1,6 @@
 package com.schedule.scheduleproject.repository;
 
+import com.schedule.scheduleproject.dto.ScheduleRequestDto;
 import com.schedule.scheduleproject.entity.Schedule;
 import org.springframework.stereotype.Repository;
 
@@ -31,5 +32,10 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     @Override
     public void deleteSchedule(Long id){
         scheduleList.remove(id);  // id로 HashMap에서 삭제
+    }
+
+    @Override
+    public Schedule updateSchedule(Schedule schedule) {
+        return null;
     }
 }

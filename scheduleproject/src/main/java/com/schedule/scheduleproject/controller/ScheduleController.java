@@ -23,6 +23,7 @@ import java.util.List;
 public class ScheduleController {
 
     // 주입된 의존성을 변경할 수 없어서 객체의 상태를 안전하게 유지할 수 있음
+    // final : 최초로 주입된 scheduleService가 계속 유지될거야!
     private final ScheduleService scheduleService;
 
     // 생성자 주입 : 클래스가 필요로 하는 의존성을 생성자를 통해 전달하는 방식
@@ -108,18 +109,17 @@ public class ScheduleController {
 
         Schedule schedule = scheduleService.getScheduleById(id);
 
-        // NullPointerException(NPE)방지
-        if (schedule == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+//        // NullPointerException(NPE)방지
+//        if (schedule == null) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//
+//        // 필수값 검증
+//        if (dto.getTitle() == null || dto.getContent() == null || dto.getWriter() == null || dto.getPassword() == null) {
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
 
-        // 필수값 검증
-        if (dto.getTitle() == null || dto.getContent() == null || dto.getWriter() == null || dto.getPassword() == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        schedule.updateSchedule(dto);
-        return new ResponseEntity<>(new ScheduleResponseDto(schedule), HttpStatus.OK);
+        return new ResponseEntity<>(scheduleService.updateSchedule(id, dto), HttpStatus.OK);
         // Service 계층에서 실제 로직 실행 후 뱉은 결과!
     }
 
@@ -131,15 +131,15 @@ public class ScheduleController {
 
         Schedule schedule = scheduleService.getScheduleById(id);
 
-        // NullPointerException(NPE)방지
-        if (schedule == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        // 필수값 검증 (제목 필수)
-        if (dto.getTitle() == null || dto.getContent() != null || dto.getWriter() != null || dto.getPassword() != null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+//        // NullPointerException(NPE)방지
+//        if (schedule == null) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//
+//        // 필수값 검증 (제목 필수)
+//        if (dto.getTitle() == null || dto.getContent() != null || dto.getWriter() != null || dto.getPassword() != null) {
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
 
         schedule.updateTitle(dto);
         return new ResponseEntity<>(new ScheduleResponseDto(schedule), HttpStatus.OK);

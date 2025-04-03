@@ -1,12 +1,16 @@
 package com.schedule.scheduleproject.service;
 
 import com.schedule.scheduleproject.dto.ScheduleRequestDto;
+import com.schedule.scheduleproject.dto.ScheduleResponseDto;
 import com.schedule.scheduleproject.entity.Schedule;
 import com.schedule.scheduleproject.exception.InvalidPasswordException;
 import com.schedule.scheduleproject.exception.ScheduleNotFoundException;
 import com.schedule.scheduleproject.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -77,19 +81,26 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public Schedule updateSchedule (Long id, ScheduleRequestDto dto) {
+    public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto dto) {
         Schedule schedule = scheduleRepository.findScheduleById(id); // 해당 id인 일정 찾기
         if (schedule == null) { // 먼저 null값 체크
             throw new ScheduleNotFoundException(id);
         }
-        if (!schedule.getPassword().equals(dto.getPassword())) { // 비밀번호 검증
+
+        if (dto.getTitle() == null || dto.getContent() == null || dto.getWriter() == null || dto.getPassword() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "title, content, writer and password are required values");
+        }     if (!schedule.getPassword().equals(dto.getPassword())) { // 비밀번호 검증
             throw new InvalidPasswordException();
         }
 
-        schedule.setTitle(dto.getTitle());
+        // 바꾸고, 저장하고 (업데이트 기본로직)
+        // 해당 id인 스케줄의 값을 dto의 값으로 바꾸기
+        schedule.setTitle(dto.getTitle());  // setTitle() : 스케줄값을 이렇게 세팅할거야 >> 스케줄값을 dto값으로 바꿔줌
         schedule.setContent(dto.getContent());
         schedule.setWriter(dto.getWriter());
-        schedule.setUpdate_date(LocalDateTime.now());
-        return schedule;
+
+        scheduleRepository.updateSchedule(schedule);
+
+        return new ScheduleResponseDto(schedule);
     }
 }

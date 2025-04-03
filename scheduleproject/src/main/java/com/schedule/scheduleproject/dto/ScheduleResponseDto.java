@@ -5,11 +5,13 @@ package com.schedule.scheduleproject.dto;
 
 import com.schedule.scheduleproject.entity.Schedule;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 public class ScheduleResponseDto {
 
     private Long id;

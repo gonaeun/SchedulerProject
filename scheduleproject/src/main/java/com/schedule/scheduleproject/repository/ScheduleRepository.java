@@ -1,5 +1,6 @@
 package com.schedule.scheduleproject.repository;
 
+import com.schedule.scheduleproject.dto.ScheduleRequestDto;
 import com.schedule.scheduleproject.entity.Schedule;
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface ScheduleRepository {
     Schedule findScheduleById(Long id);  // 단건 일정 조회
 
     void deleteSchedule(Long id); // 일정 삭제
+
+    Schedule updateSchedule(Schedule schedule); // 일정 수정
 }
